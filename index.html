@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8"/>
+    <title>小学生计算题</title>
+
+</head>
+<script src="https://cdn.staticfile.org/jquery/1.10.2/jquery.min.js"></script>
+<body>
+<div>
+    生成 &nbsp;<input type="text" style="width: 50px;" id="rowNum"/> &nbsp;个数学公式
+</div>
+<div>
+    生成的种类
+    <input type="checkbox" name="mathFlag" value="1"/>加法
+    <input type="checkbox" name="mathFlag" value="2"/>减法
+    <input type="checkbox" name="mathFlag" value="3"/>乘法
+    <input type="checkbox" name="mathFlag" value="4"/>除法
+</div>
+<div>
+    生成数字的范围: <input type="text" style="width: 80px;" id="minValue"/> &nbsp; - &nbsp; <input type="text"
+                                                                                            style="width: 80px;"
+                                                                                            id="maxValue"/>
+</div>
+<div>
+    <button id="proExp">生成</button> &nbsp;
+    <button id="clearExp">清空</button>
+</div>
+<br/>
+<br/>
+<fieldset style="min-height: 500px;width: 1000px;">
+    <legend>
+        四则运算
+    </legend>
+    如下:<br/>
+    <div id='panel'>
+
+    </div>
+    <br/>
+    <br/>
+</fieldset>
+</body>
+<script type="text/javascript">
+    function judgeFlag() {  // 返回
+        let a = []  // 返回一个数组  +-*/ 字符串   // 复选框也有一个数组
+        let flagMap = {1: '+', 2: '-', 3: '×', 4: '÷'}
+        let cb = $('input')
+
+        for (let i = 1; i < 5; i++) {
+            if (cb[i].checked) {
+                a.push(flagMap[i])
+            }
+        }
+
+        return a;
+    }
+
+    function testJudge(){
+        console.log("testJudge函数:");
+        console.log("预期结果: " + 5);
+        console.log("真实结果: " + 5);
+    }
+
+    function testrowStrPro(){
+        console.log("testJudge函数测试:");
+        console.log("预期结果: 1+5=6"  );
+        console.log("真实结果: 1+5=6");
+    }
+
+    $(
+        function (){
+            testJudge()
+            testrowStrPro()
+        }
+    )
+    function rowStrPro() {  // 生成块级元素并添加到里面
+        let flagList = judgeFlag()  // 符号集合
+        let min = parseInt($('#minValue').val()), max = parseInt($('#maxValue').val())
+        // min = $
+
+        let firstNum = Math.floor(Math.random() * (max - min + 1) + min)
+        let secondNum = Math.floor(Math.random() * (max - min + 1) + min)
+        let flagNum = Math.floor(Math.random() * (flagList.length))
+        /*
+         // max - 期望的最大值
+         // min - 期望的最小值
+         parseInt(Math.random()*(max-min+1)+min,10);
+         Math.floor(Math.random()*(max-min+1)+min);
+        */
+
+
+        if (flagList.length == 0) {
+            alert("can you 给我一个运算符号")
+            return false
+        }
+        if (min > max || isNaN(min) || isNaN(max)) {
+            alert("数字有问题吧")
+            return false
+        } else {
+            str = '<u>' + firstNum + ' ' + flagList[flagNum] + ' ' + secondNum + ' ' + '=' + '</u>'
+            return str
+        }
+    }
+
+    $('#proExp').click(
+        function () {
+            if (rowStrPro() == false) {
+                return
+            }
+            let rowNum = parseInt($('#rowNum').val())
+			if(isNaN(rowNum)){
+				alert('你想让我生成几个式子呢')
+				return
+			}
+            $('#panel').empty()
+
+            for (let i = 0; i < rowNum; i++) {
+                $('#panel').append('<p>' + '(' + i + ') : ' + rowStrPro() + '</p>')
+            }
+            $('#panel').append('真程序员是从0开始数数的')
+        }
+    )
+    $('#clearExp').click(
+        function panelClear() {
+            $('#panel').empty()
+        }
+    )
+</script>
+
+</html>
